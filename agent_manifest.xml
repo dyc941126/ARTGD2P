@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<agents>
+    <agent name="Maxsum" class="org.dyc.algo.maxsum.MaxsumAgent" measurement="org.dyc.algo.maxsum.MaxsumMeasurement"/>
+    <agent name="HOP" class="org.dyc.algo.hop.HOPMaxsumAgent" measurement="org.dyc.algo.hop.HOPMaxsumMeasurement"/>
+</agents>
