@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 public class QuantileUtilityDigest  extends AbstractUtilityDigest{
     private TreeMap<Long, Integer> histogram;
+    private boolean mix = false;
 
     public QuantileUtilityDigest(Constraint data, Set<Integer> fixedIndexes, int[] curAssign) {
         super(data, fixedIndexes, curAssign);
@@ -23,12 +24,20 @@ public class QuantileUtilityDigest  extends AbstractUtilityDigest{
     @Override
     protected void end() {
         int target = (int) (this.combinationNum * 0.25);
+        double alpha = this.combinationNum * 0.25 - target;
         int cnt = 0;
         for (long util : this.histogram.descendingKeySet()){
             cnt += this.histogram.get(util);
-            if (cnt >= target){
-                this.weight = util;
+            if (cnt > target){
+                if (!mix)
+                    this.weight = util;
+                else
+                    this.weight += alpha * (util - this.weight);
                 break;
+            }
+            else if (cnt == target){
+                this.weight = util;
+                mix = true;
             }
         }
     }
